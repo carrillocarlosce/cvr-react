@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Grid, Paper, Theme, createStyles, withStyles, IconButton, List, ListItem, Avatar, ListItemText, ListSubheader, LinearProgress, Modal } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import * as firebase from 'firebase';
-import firebaseApp, { firestore } from '../../../../services/firebase';
-import Browser from '../../../../components/browser/browser';
-import DetailsView from '../../../../components/browser/components/DetailsView';
-import NotiSnack, { NotiSkackPropTypes } from '../../../../services/notisnack';
+import { RouteComponentProps } from 'react-router';
+import Browser from '../../../../../components/browser/browser';
+import DetailsView from '../../../../../components/browser/components/DetailsView';
+import NotiSnack, { NotiSkackPropTypes } from '../../../../../services/notisnack';
+// import firebaseApp, { firestore } from '../../../../services/firebase';
+// import Browser from '../../../../components/browser/browser';
+// import DetailsView from '../../../../components/browser/components/DetailsView';
+// import NotiSnack, { NotiSkackPropTypes } from '../../../../services/notisnack';
 
-const HomeWrapper = styled.div`
-    display: flex;
-    flexGrow: 1;
-    flex-direction: column;
-`;
 const styles = (theme: Theme) => createStyles({
     root: {
         width: '100%',
@@ -29,10 +27,16 @@ const styles = (theme: Theme) => createStyles({
     },
     
 });
-
-const Home = (props) => {
-    const { classes, location, user } = props;
+interface PropTypes extends RouteComponentProps {
+    classes: any;
+    user: any
+}
+const UserBrowserWrapper = (props: PropTypes) => {
+    const { classes, location, match, user } = props;
     const [selected, setSelected] = useState(null);
+    useEffect(() => {
+        console.log(props)
+    }, [])
     const [snack, setSnack] = useState<NotiSkackPropTypes>({
         autoHideDuration: null,
         open: false,
@@ -40,15 +44,13 @@ const Home = (props) => {
         message: '',
         variant: 'info'
     });
-    const onItemClick = (item: any) => {
-        setSelected(item)
-    }   
+     
     return (
-        <HomeWrapper>
+        <Fragment>
             <Browser
-                ownerUserId={user.uid}
+                ownerUserId={(match.params as any).uid}
                 viewerUserId={user.uid}
-                onItemClick={onItemClick}
+                onItemClick={(item) => setSelected(item)}
                 selected={selected}
                 onUploadProgress={(uploadTask) => {
                     uploadTask.on('state_changed', function(snapshot: any){
@@ -109,7 +111,8 @@ const Home = (props) => {
                 variant={snack.variant}
                 message={snack.message}
             />
-        </HomeWrapper>
+        </Fragment>
     )}
 
-export default withStyles(styles)(Home)
+const UserBrowser = withStyles(styles)(UserBrowserWrapper);
+export default UserBrowser;

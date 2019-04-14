@@ -11,6 +11,7 @@ export interface UserTypes {
   email: string,
   name: string,
   photoURL: string
+  claims: any
 }
 export interface AccountTypes {
   user?: UserTypes | null
@@ -22,14 +23,26 @@ class AccountProvider extends Component {
   constructor(props) {
     super(props);
     firebaseApp.auth()
-    .onAuthStateChanged((next) => {
-      if (next) {
+    .onAuthStateChanged((user) => {
+      if (user) {
         this.setUser({
-          uid: next.uid,
-          email: next.email,
-          name: next.displayName,
-          photoURL: next.photoURL
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          claims: {}
         })
+        user.getIdTokenResult()
+        .then((idTokenResult) => {
+          const claims = idTokenResult.claims;
+          this.setUser({
+            ...this.state.user,
+            claims
+          })
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       } else {
         this.signOut()
       }

@@ -20,6 +20,8 @@ interface FormValues {
 }
 interface OtherProps {
   title?: string;
+  buttonSubmitText?: string;
+  buttonCancelText?: string;
   classes?: any;
   close?(): void;
   onSubmit?(values: FormValues): Promise<any>
@@ -55,6 +57,8 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
       classes,
       close,
       onSubmit,
+      buttonSubmitText,
+      buttonCancelText
   } = props;
 
   return (
@@ -90,7 +94,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
             type={'submit'}
             color="primary"
             className={classes.button}>
-            Crear
+            {buttonSubmitText || 'Guardar'}
           </Button>
           <Button 
             disabled={isSubmitting}
@@ -98,7 +102,8 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
             color="secondary"
             className={classes.button}
             onClick={close}>
-            Cancelar
+            {buttonCancelText || 'Cancelar'}
+            
           </Button>
         </CardActions>
       </Card>
