@@ -1,15 +1,13 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+
 admin.initializeApp(functions.config().firebase);
+const auth = admin.auth();
 const db = admin.firestore();
 const storage = admin.storage();
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-const { increment, serverTimestamp } = admin.firestore.FieldValue
+
+const { increment, serverTimestamp } = admin.firestore.FieldValue;
+
 exports.registerUser = functions.auth.user().onCreate(async (user) => {
     try {
         const createUser = await db.doc(`users/${user.uid}`).set({
@@ -50,10 +48,10 @@ exports.fileUpload = functions.storage.object().onFinalize(async (object, contex
         console.log(object)
         if(object.metadata!.uploadType === 'user/directory') {
             const metadata = object.metadata!;
-            const uploaderSnapshot = await db.doc(`users/${metadata.userId}`).get();
+            const uploaderSnapshot = await db.doc(`users/${metadata.uploaderId}`).get();
             const uploader = uploaderSnapshot.data();
             const data = {
-                userId: metadata.userId,
+                userId: metadata.ownerId,
                 parent: metadata.parent || null,
                 contentType: object.contentType,
                 size: object.size,
@@ -87,6 +85,25 @@ exports.fileUpload = functions.storage.object().onFinalize(async (object, contex
     }  
 });
 
+async function grantAdmin(email: string): Promise<void> {
+    const user = await auth.getUserByEmail(email);
+
+    if(user.customClaims && (user.customClaims as any).admin === true) {
+        return;
+    }
+    return auth.setCustomUserClaims(user.uid, {
+        admin: true,
+    });
+}
+exports.addAdmin = functions.https.onRequest(async (req, res) => {
+    try {
+        await grantAdmin('carrillocarlosce@gmail.com');
+        return res.sendStatus(200).send('Done!')
+    } catch (error) {
+        return res.sendStatus(500).send('Somenthing went wrong...')
+    }
+    
+})
 // exports.download = functions.https.onRequest((req, res) => {
 //     return res.send('Hello World')
 
