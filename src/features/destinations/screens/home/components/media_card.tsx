@@ -19,13 +19,12 @@ const styles = createStyles({
 });
 
 const MediaCard = (props: PropTypes) => {
-  const { classes, title, image, alt, description } = props;
+  const { classes, title, image, description } = props;
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
           component="img"
-          alt={alt}
           className={classes.media}
           height="140"
           image={image}

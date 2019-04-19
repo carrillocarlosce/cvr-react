@@ -4,16 +4,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
-import { Menu } from '@material-ui/core';
+import { Menu, Theme, createStyles } from '@material-ui/core';
+import { ContextualMenuOption } from 'cvr-shared/interfaces/browser';
+
 interface PropTypes {
     classes: any,
-    items: {
-        name: string,
-        action?(): void,
-        close?: boolean 
-    }[];
+    items: ContextualMenuOption[];
   }
-const styles = theme => ({
+const styles = (theme: Theme) => createStyles({
   root: {
     display: 'flex',
   },
@@ -48,11 +46,11 @@ const ContextualMenuWrapper = (props: PropTypes) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-            {items.map((x, key) => (
+            {items.map((option, key) => (
                 <MenuItem key={key} onClick={() => {
-                    x.action();
+                    option.action();
                     handleClose()
-                }}>{x.name}</MenuItem>
+                }}>{option.name}</MenuItem>
             ))}
           
         </Menu>

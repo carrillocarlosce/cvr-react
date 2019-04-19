@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment, SyntheticEvent } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import {
     List,
     ListItem,
@@ -17,7 +17,6 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import classNames from 'classnames';
 import { green } from '@material-ui/core/colors';
-import * as firebase from 'firebase';
 import firebaseApp, { firestore } from '../../services/firebase';
 import IconFileType from '../icons/IconFileType';
 import filesize from 'filesize';
@@ -25,38 +24,9 @@ import { collection } from 'rxfire/firestore';
 import { map } from 'rxjs/operators';
 import FileForm from './components/FileForm';
 import { FaFolderPlus } from 'react-icons/fa';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import IconButton from '@material-ui/core/IconButton';
-import NotiSnack, { NotiSkackPropTypes } from '../../services/notisnack';
 import ContextualMenu from '../Popper/ContextualMenu';
-interface DirectoryType {
-    id?: string;
-    parent?: string | null;
-    elements?: number;
-    name?: string;
-    path?: string;
-    contentType?: string;
-    filePath?: string;
-    size?: string;
-    userId?: string;
-    delete?(): Promise<void>;
-    rename?(name: string): Promise<void>;
-}
+import { ContextualMenuOption, BrowserItemType, BrowserType } from 'cvr-shared/interfaces/browser';
 
-interface BrowserType {
-    ownerUserId: string;
-    viewerUserId: string;
-    classes: any;
-    onFileUpload?(
-        event: React.ChangeEvent<HTMLInputElement>, 
-        directory: DirectoryType,
-        ownerId: string,
-        uploaderId: string,
-        onProgress: any): void;
-    selected?: DirectoryType;
-    onItemClick?(item: DirectoryType): void;
-    onUploadProgress?(uploadTask: firebase.storage.UploadTask): void;
-}
 interface FormModal {
     open?: boolean;
     name?: string;
@@ -93,7 +63,7 @@ const styles = (theme: Theme) => createStyles({
 const directoriesRef = firestore.collection('directories');
 
 const createGetPath = (userId: string) => {
-    return (directory: DirectoryType) => {
+    return (directory: BrowserItemType) => {
         const root = `user_directories/${userId}/`;
         const path = directory.parent ? directory.parent + '/' : '';
         return root + path;
@@ -116,8 +86,7 @@ const onFileUpload = (event, directory, ownerId, uploaderId, onProgress) => {
         name: file.name
     }
     const uploadTask = storageRef.put(file, { customMetadata })
-    onProgress(uploadTask)
-    
+    onProgress(uploadTask) 
 
 }
 
@@ -131,9 +100,8 @@ const BroserWrapper = (props: BrowserType) => {
         onItemClick,
         selected
     } = props;
-    const [formOpened, setFormOpened] = useState(false)
     const [form, setForm] = useState<FormModal>({})
-    const [directories, setDirectories]  = useState<DirectoryType[]>([]);
+    const [directories, setDirectories]  = useState<BrowserItemType[]>([]);
     const [loading, setLoading] = useState(false);
     const getPath = createGetPath(ownerUserId);
     const initialDir = [{ 
@@ -186,7 +154,7 @@ const BroserWrapper = (props: BrowserType) => {
     }, [history.length])
 
 
-    const handleClick = (item: DirectoryType) => {
+    const handleClick = (item: BrowserItemType) => {
         if(item.contentType !== 'folder') {
             return onItemClick(item);
         }
@@ -211,11 +179,33 @@ const BroserWrapper = (props: BrowserType) => {
             setDirectories([])
         }
     }
+    const getContextualOptions = (item: BrowserItemType): ContextualMenuOption[] => {
+        const options: ContextualMenuOption[] = [
+            {
+                name: 'Renombrar',
+                action: () => {
+                    setForm({
+                        open: true,
+                        name: 'Renombrar',
+                        value: item.name,
+                        action: item.rename,
+                        buttonSubmitText: 'Renombrar'
+                    })
+                }
+            },
+        ];
+        if (item.contentType !== 'folder') {
+            options.push({
+                name: 'Eliminar',
+                action: item.delete
+            })
+        }
+        return options;
+    }
     return (
         <Fragment>
             <Modal 
                 onClose={() => {
-                    setFormOpened(false)
                     setForm({})
                 }}
                 open={form.open || false}
@@ -266,20 +256,7 @@ const BroserWrapper = (props: BrowserType) => {
                             `${filesize(+item.size)}`
                             } />
                         <ListItemSecondaryAction>
-                            <ContextualMenu items={[
-                                {
-                                    name: 'Renombrar',
-                                    action: () => {
-                                        setForm({
-                                            open: true,
-                                            name: 'Renombrar',
-                                            value: item.name,
-                                            action: item.rename,
-                                            buttonSubmitText: 'Renombrar'
-                                        })
-                                    }
-                                }
-                            ]}/>
+                            <ContextualMenu items={getContextualOptions(item)}/>
                         </ListItemSecondaryAction>
                     </ListItem>
                 ))}
