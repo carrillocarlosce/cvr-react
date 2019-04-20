@@ -58,11 +58,11 @@ const MainHeaderWrapper = (props: PropTypes) => {
         >
           {title}
         </Typography>
-        <IconButton color="inherit">
+        {/* <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
             <NotificationsIcon />
           </Badge>
-        </IconButton>
+        </IconButton> */}
       </Toolbar>
     </AppBar>
   );
