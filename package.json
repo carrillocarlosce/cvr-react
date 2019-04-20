@@ -13,7 +13,7 @@
     "@types/react-dom": "16.8.2",
     "@types/react-router-dom": "^4.3.2",
     "@types/yup": "^0.26.12",
-    "cvr-shared": "file:../cvr-shared",
+    "cvr-shared": "git+https://github.com/carrillocarlosce/cvr-shared.git",
     "file-saver": "^2.0.1",
     "filesize": "^4.1.2",
     "firebase": "^5.9.3",
