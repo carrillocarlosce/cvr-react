@@ -114,13 +114,13 @@ class Dashboard extends React.Component<PropTypes> {
                         src={user.photoURL}
                         className={classes.bigAvatar} />
                     )}
-                    {!user.photoURL && (
+                    {/* {!user.photoURL && (
                       <Avatar
                         alt={user.name}
                         className={classes.bigAvatar}>
-                        {user.name[0]}
+                        {(user.email)[0]}
                       </Avatar>
-                    )}
+                    )} */}
                       <div className={classes.userTextBox}>
                         <Typography variant="h6">
                           {user.name}

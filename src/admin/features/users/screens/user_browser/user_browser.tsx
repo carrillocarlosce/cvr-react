@@ -1,12 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Grid, Paper, Theme, createStyles, withStyles, IconButton, List, ListItem, Avatar, ListItemText, ListSubheader, LinearProgress, Modal } from '@material-ui/core';
-import Fab from '@material-ui/core/Fab';
-import * as firebase from 'firebase';
+import { Theme, createStyles, withStyles, Modal } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router';
 import Browser from '../../../../../components/browser/browser';
 import DetailsView from '../../../../../components/browser/components/DetailsView';
 import NotiSnack, { NotiSkackPropTypes } from '../../../../../services/notisnack';
-// import firebaseApp, { firestore } from '../../../../services/firebase';
+import { firebase } from '../../../../../services/firebase';
+
 // import Browser from '../../../../components/browser/browser';
 // import DetailsView from '../../../../components/browser/components/DetailsView';
 // import NotiSnack, { NotiSkackPropTypes } from '../../../../services/notisnack';

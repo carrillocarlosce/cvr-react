@@ -25,13 +25,15 @@ import { map } from 'rxjs/operators';
 import FileForm from './components/FileForm';
 import { FaFolderPlus } from 'react-icons/fa';
 import ContextualMenu from '../Popper/ContextualMenu';
-import { ContextualMenuOption, BrowserItemType, BrowserType } from 'cvr-shared/interfaces/browser';
+import { BrowserItemType, BrowserType } from 'cvr-shared/interfaces/browser';
+import { ContextualMenuOption } from 'cvr-shared/interfaces';
 
 interface FormModal {
     open?: boolean;
     name?: string;
     value?: any;
     action?: any;
+    label?: string;
     buttonSubmitText?: string;
     buttonCancelText?: string;
 }
@@ -186,6 +188,7 @@ const BroserWrapper = (props: BrowserType) => {
                 action: () => {
                     setForm({
                         open: true,
+                        label: 'Nuevo nombre',
                         name: 'Renombrar',
                         value: item.name,
                         action: item.rename,
@@ -216,7 +219,8 @@ const BroserWrapper = (props: BrowserType) => {
                     left: '50%',
                     transform: 'translate(-50%, -50%)'
                 }}>
-                <FileForm 
+                <FileForm
+                    formLabel={form.label}
                     title={form.name}
                     close={() => setForm({ ...form, open: false })}
                     selected={selected}
@@ -225,9 +229,7 @@ const BroserWrapper = (props: BrowserType) => {
                     onSubmit={(values) => {
                         return form.action(values.name).then(() => {
                             setForm({})
-
                         })
-                        
                     }}
                     />
                 </div>
@@ -277,9 +279,10 @@ const BroserWrapper = (props: BrowserType) => {
             <div className={classes.fabs}>
                 <Fab onClick={() => setForm({
                     open: true,
+                    label: 'Nombre de la carpeta',
                     name: 'Añadir Carpeta',
                     buttonSubmitText: 'Añadir',
-                    action: (name) => {
+                    action: (name: string) => {
                         return directoriesRef.add({
                             contentType: 'folder',
                             name,

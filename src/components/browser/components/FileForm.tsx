@@ -1,25 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import { TextField, Button } from '@material-ui/core';
-
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
-interface PropTypes {
-    classes: any,
-    selected: any | null,
-    close?(): void
-}
 interface FormValues {
   name: string;
 }
 interface OtherProps {
   title?: string;
+  formLabel?: string;
   buttonSubmitText?: string;
   buttonCancelText?: string;
   classes?: any;
@@ -54,6 +48,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
       handleSubmit,
       isSubmitting,
       title,
+      formLabel,
       classes,
       close,
       onSubmit,
@@ -69,11 +64,11 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
         />
         <CardContent>
           <TextField
-            
+            error={touched && !!errors.name}
             id="standard-full-width"
-            label="Carpeta"
+            label={formLabel}
             style={{ margin: 8, marginRight: 16 }}
-            placeholder="Nombre de la carpeta"
+            placeholder="Su texto aqui..."
             // helperText="Full width!"
             fullWidth
             margin="normal"
@@ -89,7 +84,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
         </CardContent>
         <CardActions  className={classes.actions} disableActionSpacing>
           <Button
-            disabled={isSubmitting}
+            disabled={isSubmitting || (touched && !!errors.name)}
             component={'button'}
             type={'submit'}
             color="primary"

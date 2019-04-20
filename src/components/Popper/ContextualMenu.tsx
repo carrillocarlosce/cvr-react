@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Menu, Theme, createStyles } from '@material-ui/core';
-import { ContextualMenuOption } from 'cvr-shared/interfaces/browser';
+import { ContextualMenuOption } from 'cvr-shared/interfaces';
 
 interface PropTypes {
     classes: any,

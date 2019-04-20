@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Grid, Paper, Theme, createStyles, withStyles, IconButton, List, ListItem, Avatar, ListItemText, ListSubheader, LinearProgress, Modal } from '@material-ui/core';
-import Fab from '@material-ui/core/Fab';
-import * as firebase from 'firebase';
-import firebaseApp, { firestore } from '../../../../services/firebase';
+import { Theme, createStyles, withStyles, Modal } from '@material-ui/core';
+import { firebase } from '../../../../services/firebase';
 import Browser from '../../../../components/browser/browser';
 import DetailsView from '../../../../components/browser/components/DetailsView';
 import NotiSnack, { NotiSkackPropTypes } from '../../../../services/notisnack';
