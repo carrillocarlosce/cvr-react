@@ -7,11 +7,9 @@ import Divider from '@material-ui/core/Divider';
 import { SecondaryListItems, MainListItems } from './listItems';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from './features/home/screens/home/home';
-import DestinationsHome from './features/destinations/screens/home/destinations_home';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 // pick utils
 import MomentUtils from '@date-io/moment';
-import Search from './features/home/screens/search/search';
 import MainHeader from './layout/header/header';
 import Login from './features/auth/screens/login/login';
 import AccountProvider, { AccountConsumer } from './providers/AccountProvider';
@@ -24,10 +22,7 @@ import UsersList from './admin/features/users/screens/users_list/users_list';
 import UserHome from './admin/features/users/screens/user_home/user_home';
 import UserBrowser from './admin/features/users/screens/user_browser/user_browser';
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
-const BreakUp = (props) => {
-  const matches = useMediaQuery(`(min-width:${props.px}px)`);
-  return matches ? props.children : <Fragment />
-}
+
 const styles = (theme: Theme) => createStyles({
   root: {
     display: 'flex',
@@ -114,13 +109,13 @@ class Dashboard extends React.Component<PropTypes> {
                         src={user.photoURL}
                         className={classes.bigAvatar} />
                     )}
-                    {/* {!user.photoURL && (
+                    {!user.photoURL && (
                       <Avatar
                         alt={user.name}
                         className={classes.bigAvatar}>
                         {(user.email)[0]}
                       </Avatar>
-                    )} */}
+                    )}
                       <div className={classes.userTextBox}>
                         <Typography variant="h6">
                           {user.name}
