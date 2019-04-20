@@ -3,6 +3,8 @@ node_js:
   - "6.4.1"
 script:
   - echo "Deploying!"
+before_install:
+  - openssl aes-256-cbc -K $encrypted_969261779e02_key -iv $encrypted_969261779e02_iv -in development.tsx.enc -out src/env/development.tsx -d
 install:
   - npm install -g firebase-tools
   - npm install
