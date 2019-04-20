@@ -8,7 +8,7 @@ install:
   - npm install
   - cd functions
   - npm install
-  - cd..
+  - cd ..
 after_success:
   - npm run build
   - firebase deploy --only hosting --token $FIREBASE_TOKEN
