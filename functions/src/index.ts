@@ -98,6 +98,7 @@ async function grantAdmin(email: string): Promise<void> {
 exports.addAdmin = functions.https.onRequest(async (req, res) => {
     try {
         await grantAdmin('carrillocarlosce@gmail.com');
+        await grantAdmin('claudio.vera@centros.cl');
         return res.sendStatus(200).send('Done!')
     } catch (error) {
         return res.sendStatus(500).send('Somenthing went wrong...')

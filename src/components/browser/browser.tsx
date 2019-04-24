@@ -10,7 +10,8 @@ import {
     createStyles,
     Fab,
     Modal,
-    ListItemSecondaryAction
+    ListItemSecondaryAction,
+    Button
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -61,6 +62,18 @@ const styles = (theme: Theme) => createStyles({
     fab: {
         marginRight: theme.spacing.unit * 2,
     },
+    breadcrumbButton: {
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.grey[100],
+        boxShadow: 'none',
+        borderRadius: 0,
+        '&:hover': {
+          backgroundColor: theme.palette.grey[300],
+        },
+    },
+    breadcrumbButtonDsabled: {
+        color: theme.palette.text.disabled,        
+    }
 });
 const directoriesRef = firestore.collection('directories');
 
@@ -92,7 +105,7 @@ const onFileUpload = (event, directory, ownerId, uploaderId, onProgress) => {
 
 }
 
-const BroserWrapper = (props: BrowserType) => {
+const BrowserWrapper = (props: BrowserType) => {
     const {
         classes,
         viewerUserId,
@@ -114,6 +127,7 @@ const BroserWrapper = (props: BrowserType) => {
     const [history, setHistory] = useState(initialDir)
     
     useEffect(() => {
+        console.log(history)
         setLoading(true);
         const directory = history[history.length - 1];
         console.log('useEffect')
@@ -234,11 +248,29 @@ const BroserWrapper = (props: BrowserType) => {
                     />
                 </div>
             </Modal>
+            <div>
+                {history.map((item, index) => {
+                    return (
+                        <Button
+                            key={index}
+                            onClick={() => {
+                                setHistory(history.slice(0, index + 1))
+                            }}
+                            variant="contained"
+                            color="primary"
+                            className={classNames(classes.margin, classes.breadcrumbButton)}
+                            disabled={history.length === index+1}
+                        >
+                            {index === 0 ? (<HomeIcon />) : item.name}
+                        </Button>
+                    )
+                })}
+            </div>
             <List className={classes.root}>
-                <ListItem button disabled={history.length === 1} onClick={goBack}>
+                {/* <ListItem button disabled={history.length === 1} onClick={goBack}>
                     {history.length > 1 ? <ArrowBackIcon  /> : <HomeIcon /> }
                     <ListItemText inset primary={history.length > 1 ? 'VOLVER' : 'PRINCIPAL'} />
-                </ListItem>
+                </ListItem> */}
                 {loading && <LinearProgress className={classes.progress} color="primary" />}
                 {(!loading && !directories.length) &&  (
                     <ListItem disabled>
@@ -303,5 +335,5 @@ const BroserWrapper = (props: BrowserType) => {
         
     )
 }
-const Browser = withStyles(styles)(BroserWrapper);
+const Browser = withStyles(styles)(BrowserWrapper);
 export default Browser;

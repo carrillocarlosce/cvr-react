@@ -113,7 +113,7 @@ class Dashboard extends React.Component<PropTypes> {
                       <Avatar
                         alt={user.name}
                         className={classes.bigAvatar}>
-                        {(user.email)[0]}
+                        {(user.email || 'Usuario')[0]}
                       </Avatar>
                     )}
                       <div className={classes.userTextBox}>
