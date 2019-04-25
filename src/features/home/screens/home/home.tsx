@@ -19,13 +19,13 @@ const styles = (theme: Theme) => createStyles({
         backgroundColor: theme.palette.background.paper,
         position: 'relative'
     },
-    
+
     progress: {
         // position: 'absolute',
         // width: '100%',
         // zIndex: 1,
     },
-    
+
 });
 
 const Home = (props) => {
@@ -40,7 +40,7 @@ const Home = (props) => {
     });
     const onItemClick = (item: any) => {
         setSelected(item)
-    }   
+    }
     return (
         <HomeWrapper>
             <Browser
@@ -49,7 +49,7 @@ const Home = (props) => {
                 onItemClick={onItemClick}
                 selected={selected}
                 onUploadProgress={(uploadTask) => {
-                    uploadTask.on('state_changed', function(snapshot: any){
+                    uploadTask.on('state_changed', function (snapshot: any) {
                         // Observe state change events such as progress, pause, and resume
                         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -62,16 +62,16 @@ const Home = (props) => {
                             variant: 'info'
                         })
                         switch (snapshot.state) {
-                          case firebase.storage.TaskState.PAUSED: // or 'paused'
-                            console.log('Upload is paused');
-                            break;
-                          case firebase.storage.TaskState.RUNNING: // or 'running'
-                            console.log('Upload is running');
-                            break;
+                            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                                console.log('Upload is paused');
+                                break;
+                            case firebase.storage.TaskState.RUNNING: // or 'running'
+                                console.log('Upload is running');
+                                break;
                         }
-                      }, function(error) {
+                    }, function (error) {
                         // Handle unsuccessful uploads
-                      }, function() {
+                    }, function () {
                         // Handle successful uploads on complete
                         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                         // uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
@@ -84,7 +84,7 @@ const Home = (props) => {
                             autoHideDuration: 6000,
                             variant: 'success'
                         })
-                      });
+                    });
                 }}
             />
             <Modal
@@ -97,17 +97,18 @@ const Home = (props) => {
                     left: '50%',
                     transform: 'translate(-50%, -50%)'
                 }}>
-                <DetailsView close={() => setSelected(false)} selected={selected}/>
+                    <DetailsView close={() => setSelected(false)} selected={selected} />
                 </div>
             </Modal>
             <NotiSnack
                 autoHideDuration={snack.autoHideDuration}
                 open={snack.open}
-                onClose={() => setSnack({...snack, open: false})}
+                onClose={() => setSnack({ ...snack, open: false })}
                 variant={snack.variant}
                 message={snack.message}
             />
         </HomeWrapper>
-    )}
+    )
+}
 
 export default withStyles(styles)(Home)

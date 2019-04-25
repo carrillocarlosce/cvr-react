@@ -19,38 +19,38 @@ const styles = (theme: Theme) => createStyles({
   },
 });
 interface PropTypes extends RouteComponentProps {
-    classes: any,
+  classes: any,
 };
 
 const AdminHomeWrapper = (props: PropTypes) => {
 
-    const { classes, match, history } = props;
+  const { classes, match, history } = props;
 
-    return (
-      <List
-        component="nav"
-        subheader={<ListSubheader component="div">Admin Dashboard</ListSubheader>}
-        className={classes.root}
-      >
-        <ListItem button onClick={() => {
-            const to = `${match.path}/users`;
-            history.push(to)
+  return (
+    <List
+      component="nav"
+      subheader={<ListSubheader component="div">Admin Dashboard</ListSubheader>}
+      className={classes.root}
+    >
+      <ListItem button onClick={() => {
+        const to = `${match.path}/users`;
+        history.push(to)
 
-            console.log(props)
-        }}>
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText inset primary="Usuarios" />
-        </ListItem>
-        {/* <ListItem button>
+        console.log(props)
+      }}>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText inset primary="Usuarios" />
+      </ListItem>
+      {/* <ListItem button>
           <ListItemIcon>
             <DraftsIcon />
           </ListItemIcon>
           <ListItemText inset primary="Drafts" />
         </ListItem> */}
-      </List>
-    );
+    </List>
+  );
 }
 
 

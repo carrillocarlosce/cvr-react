@@ -39,21 +39,21 @@ const styles = (theme: Theme) => createStyles({
         backgroundColor: '#EA4335',
     }
 });
-const  provider = new firebase.auth.GoogleAuthProvider();
+const provider = new firebase.auth.GoogleAuthProvider();
 const signIn = () => {
-    
+
     firebaseApp.auth()
         .signInWithPopup(provider)
-        .then(function(result) {
+        .then(function (result) {
             console.log(result)
-            
+
             // This gives you a Google Access Token. You can use it to access the Google API.
             // var token = result.credential.accessToken;
             // // The signed-in user info.
             // var user = result.user;
             // ...
             console.log(result)
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log(error)
 
             // Handle Errors here.
@@ -73,17 +73,17 @@ const signIn = () => {
 //     })
 //     .then(err => console.log(err))
 // }
-const LoginWrapper = ({match, history, classes}) => {
-    const [ formType, setFormType ] = useState<"login" | "register">("login");
+const LoginWrapper = ({ match, history, classes }) => {
+    const [formType, setFormType] = useState<"login" | "register">("login");
     return (
         <AccountConsumer>
             {(account) => (
                 <Fragment>
-                    <Paper 
-                        square={true} 
-                        elevation={0} 
+                    <Paper
+                        square={true}
+                        elevation={0}
                         className={classes.welcomeBox}>
-                        <Typography 
+                        <Typography
                             variant="h3"
                             component="h3"
                             color="textPrimary"
@@ -94,13 +94,13 @@ const LoginWrapper = ({match, history, classes}) => {
                     <Grid container className={classes.root} spacing={16}>
                         <Grid item xs={12} sm={6}>
                             <Paper className={classes.loginBox}>
-                                <Typography 
+                                <Typography
                                     variant="h5"
                                     gutterBottom
                                     className={classes.signInText}>
                                     {formType === "login" ? 'Iniciar Sesión' : 'Registrarse'}
                                 </Typography>
-                                <Divider/>
+                                <Divider />
                                 <EmailAuth formType={formType} />
                                 <div className={classes.formToggle}>
                                     <Button
@@ -109,14 +109,14 @@ const LoginWrapper = ({match, history, classes}) => {
                                         onClick={() => {
                                             setFormType(formType === "login" ? 'register' : 'login')
                                         }}
-                                        >
+                                    >
                                         {formType === "login" ? 'Registrarse' : 'Iniciar Sesión'}
                                     </Button>
                                     <Button size="small" className={classes.margin}>
                                         Recuperar Contraseña
                                     </Button>
                                 </div>
-                                <Divider/>
+                                <Divider />
                                 <Typography style={{
                                     textAlign: 'center',
                                     textTransform: 'uppercase',
@@ -126,7 +126,7 @@ const LoginWrapper = ({match, history, classes}) => {
                                 }}>
                                     tambien puedes
                                 </Typography>
-                                <Button 
+                                <Button
                                     variant="contained"
                                     color="primary"
                                     onClick={signIn}
@@ -136,7 +136,7 @@ const LoginWrapper = ({match, history, classes}) => {
                             </Paper>
                         </Grid>
                     </Grid>
-                    
+
                     {/* {!account.user && (<button onClick={() => {
                         signIn(account)
                     }}>Login</button>)}
@@ -146,6 +146,7 @@ const LoginWrapper = ({match, history, classes}) => {
                 </Fragment>
             )}
         </AccountConsumer>
-    )}
+    )
+}
 const Login = withStyles(styles)(LoginWrapper)
 export default Login

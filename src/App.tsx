@@ -22,6 +22,7 @@ import UsersList from './admin/features/users/screens/users_list/users_list';
 import UserHome from './admin/features/users/screens/user_home/user_home';
 import UserBrowser from './admin/features/users/screens/user_browser/user_browser';
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import UserServices from './admin/features/users/screens/user_services/user_services';
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -61,7 +62,7 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 let CustomMatchRoute = ({ component: Component, matcher, ...routeProps }) => (
-  <Route 
+  <Route
     {...routeProps}
     component={({ location, ...props }) =>
       matcher(location) && <Component {...props} />
@@ -80,7 +81,7 @@ class Dashboard extends React.Component<PropTypes> {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
-  
+
   render() {
     const { classes } = this.props;
     return (
@@ -88,11 +89,11 @@ class Dashboard extends React.Component<PropTypes> {
         <Router>
           <AccountProvider>
             <CssBaseline />
-            <MainHeader 
+            <MainHeader
               handleDrawerOpen={this.handleDrawerOpen}
               title={'Inicio'} />
             <AccountConsumer>
-              {({user}) => (
+              {({ user }) => (
                 <Drawer
                   anchor={'left'}
                   open={this.state.open}
@@ -101,21 +102,21 @@ class Dashboard extends React.Component<PropTypes> {
                     paper: classes.drawerPaper,
                   }}
                 >
-                {user && (
-                  <Fragment>
-                    {user.photoURL && (
-                      <Avatar
-                        alt={user.name}
-                        src={user.photoURL}
-                        className={classes.bigAvatar} />
-                    )}
-                    {!user.photoURL && (
-                      <Avatar
-                        alt={user.name}
-                        className={classes.bigAvatar}>
-                        {(user.email || 'Usuario')[0]}
-                      </Avatar>
-                    )}
+                  {user && (
+                    <Fragment>
+                      {user.photoURL && (
+                        <Avatar
+                          alt={user.name}
+                          src={user.photoURL}
+                          className={classes.bigAvatar} />
+                      )}
+                      {!user.photoURL && (
+                        <Avatar
+                          alt={user.name}
+                          className={classes.bigAvatar}>
+                          {(user.email || 'Usuario')[0]}
+                        </Avatar>
+                      )}
                       <div className={classes.userTextBox}>
                         <Typography variant="h6">
                           {user.name}
@@ -124,36 +125,37 @@ class Dashboard extends React.Component<PropTypes> {
                           {user.email}
                         </Typography>
                       </div>
-                    
-                    <Divider />
-                  </Fragment>
-                )}
-                {user && (<List onClick={this.handleDrawerClose}>
-                  <MainListItems/>
-                </List>)}
-                <Divider />
-                <List onClick={this.handleDrawerClose}>
-                  <SecondaryListItems loggedIn={!!user}/>
-                </List>
-              </Drawer>)}   
+
+                      <Divider />
+                    </Fragment>
+                  )}
+                  {user && (<List onClick={this.handleDrawerClose}>
+                    <MainListItems />
+                  </List>)}
+                  <Divider />
+                  <List onClick={this.handleDrawerClose}>
+                    <SecondaryListItems loggedIn={!!user} />
+                  </List>
+                </Drawer>)}
             </AccountConsumer>
 
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                  <AuthenticatedRoute path="/" exact component={Home} />
-                  <UnauthenticatedRoute path="/login/" component={Login} />
+                <AuthenticatedRoute path="/" exact component={Home} />
+                <UnauthenticatedRoute path="/login/" component={Login} />
 
-                  {/* Admin Routes */}
-                  
-                  <AdminRoute path="/admin/users/:uid/browser" exact component={UserBrowser} />
-                  <AdminRoute path="/admin" exact component={AdminHome} />
-                  <AdminRoute path="/admin/users" exact component={UsersList} />
-                  <AdminRoute path="/admin/users/:uid" exact component={UserHome} />
+                {/* Admin Routes */}
+
+                <AdminRoute path="/admin/users/:uid/browser" exact component={UserBrowser} />
+                <AdminRoute path="/admin/users/:uid/services" exact component={UserServices} />
+                <AdminRoute path="/admin" exact component={AdminHome} />
+                <AdminRoute path="/admin/users" exact component={UsersList} />
+                <AdminRoute path="/admin/users/:uid" exact component={UserHome} />
               </main>
             </MuiPickersUtilsProvider>
           </AccountProvider>
-        </Router> 
+        </Router>
       </div>
     );
   }
